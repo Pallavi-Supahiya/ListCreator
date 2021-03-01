@@ -6,7 +6,14 @@ import './App.scss';
 export default function App() {
   return (
     <div className="App">
-      <Lists />
+      <h4 className="header">
+        <i className="far fa-star"></i>
+        Universtar
+      </h4>
+
+      <div className="design">
+        <Lists />
+      </div>
     </div>
   );
 }

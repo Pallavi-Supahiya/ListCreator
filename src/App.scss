@@ -1,9 +1,25 @@
 .App {
   background-image: url('./assets/images/RJ.jpg');
-  display: flex;
+
   position: fixed;
-  min-width: 100%;
-  min-height: 100%;
+  min-width: 100vw;
+  min-height: 100vh;
   background-size: cover;
   background-position: center;
+}
+.design {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow-x: auto;
+}
+.header {
+  color: #08376a;
+  background-color: hsla(11, 77%, 53%, 0.5);
+  text-align: center;
+  padding: 10px;
+  margin: auto;
+}
+.header:hover {
+  color: #e7667c;
 }

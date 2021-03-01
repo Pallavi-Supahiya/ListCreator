@@ -1,0 +1,23 @@
+.newlist {
+  background-color: #ead3d9;
+  border-radius: 3px;
+  box-sizing: border-box;
+  max-height: 100%;
+  padding: 10px;
+  width: 220px;
+  margin: 10px;
+}
+.list {
+  cursor: pointer;
+  width: 220px;
+  background-color: hsla(344, 35%, 87%, 0.5);
+}
+.titletext {
+  width: 195px;
+  height: 25px;
+  border: 2px solid #e7667c;
+  border-radius: 5px;
+}
+.span {
+  background-color: #e7667c;
+}
