@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import List from './List';
 import './Lists.scss';
 import './Button.scss';
@@ -6,6 +6,11 @@ const Lists = () => {
   const [addList, setAddList] = useState(true);
   const [heading, setHeading] = useState('');
   const [lists, setLists] = useState([]);
+  useEffect(() => {
+    let tempLists = JSON.parse(localStorage.getItem('ListsName'));
+    console.log(tempLists);
+    if (tempLists) setLists(tempLists);
+  }, []);
   const handelAddList = (e) => {
     setAddList((prevState) => !prevState);
     console.log(e.target);
@@ -13,11 +18,13 @@ const Lists = () => {
   const handelHeading = (e) => {
     setHeading(e.target.value);
   };
-  const onClickAddList = () => {
+  const onClickAddList = (e) => {
+    if (heading.length < 3) return alert('Min 4 Char required..!');
     let tempList = [...lists];
     tempList.push(heading);
     setHeading('');
     setLists(tempList);
+    localStorage.setItem('ListsName', JSON.stringify(tempList));
   };
   const allowDrop = (e) => {
     e.preventDefault();
@@ -29,12 +36,21 @@ const Lists = () => {
     // let sourceIdParentEl = sourceIdEl.parentElement;
     console.log(e);
   };
+  // const validation = (e) => {
+  // if (e.keyCode === 13) {
+  // if (e.value == ' ') setHeading(true);
+  //  else setHeading(false);
+  // }
+  // };
+
   return (
     <>
       <div onDrop={onDropIt} onDragOver={allowDrop}>
-        {lists &&
-          lists.length > 0 &&
-          lists.map((list) => <List heading={list} />)}
+        <div className="direct">
+          {lists &&
+            lists.length > 0 &&
+            lists.map((list) => <List heading={list} />)}
+        </div>
       </div>
       <div>
         {addList ? (
@@ -49,6 +65,7 @@ const Lists = () => {
               onChange={handelHeading}
               value={heading}
               autoFocus
+              //onKeyDown={validation}
             />
             <br />
             <button className="buttons" onClick={onClickAddList}>

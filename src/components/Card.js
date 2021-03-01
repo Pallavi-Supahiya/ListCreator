@@ -1,13 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './List.scss';
 import Popup from './Popup';
 
-const Card = ({ card }) => {
-  const [cardHeading, setCardHeading] = useState(card);
-  const [editCardHeading, setEditCardHeading] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+const Card = ({
+  card,
+  setEditCardHeading,
+  idx,
+  saveData,
+  editCardHeading,
+  listHeading,
+}) => {
+  const [cardHeading, setCardHeading] = useState(card.cardHeading);
+  const [openModal, setOpenModal] = useState(false);
+  // const [editCardHeading, setEditCardHeading] = useState(false);
   const [cardImage, setCardImage] = useState('');
   const [data, setData] = useState({});
+  useEffect(() => {
+    if (card.data) {
+      console.log(card.data);
+      card.data &&
+        card.data.cardImages &&
+        card.data.cardImages.length > 0 &&
+        setCardImage(card.data.cardImages[0].base64);
+      setData(card.data);
+    }
+  }, [card]);
   const onEditCardHeading = (e) => {
     setEditCardHeading((prev) => !prev);
   };
@@ -17,56 +34,68 @@ const Card = ({ card }) => {
   const onSaveCardHeading = (e) => {
     if (e.keyCode === 13) setEditCardHeading(false);
   };
-  const onClickCardHeading = (e) => {
-    setModalOpen(true);
+  const handleModal = (val) => {
+    console.log('im in handel', val);
+    setOpenModal(val);
   };
+
   return (
     <>
-      {modalOpen && (
+      {openModal && (
         <Popup
-          openModal={setModalOpen}
+          openModal={handleModal}
           setImage={setCardImage}
-          data={data}
+          data={card.data}
           setData={setData}
+          idx={idx}
+          saveCardData={saveData}
           cardHeading={cardHeading}
           setCardHeading={setCardHeading}
+          listHeading={listHeading}
         />
       )}
-      {cardImage && <img src={cardImage} />}
-      {editCardHeading ? (
-        <input
-          value={cardHeading}
-          onChange={onChangeCardHeading}
-          onKeyDown={onSaveCardHeading}
-        />
-      ) : (
-        <>
-          <div className="crd">
-            <p className="cardstyle" onClick={onClickCardHeading}>
-              {cardHeading}{' '}
-            </p>
-            <button className="iconbtn" onClick={onEditCardHeading}>
-              <i className="fas fa-pencil-alt"></i>
-            </button>
-          </div>
-        </>
-      )}
-      <div className="design-icon">
-        {data.cardImages && data.cardImages.length > 0 && (
-          <span>
-            <i className="fa fa-paperclip"></i>
-            {data.cardImages.length}
-          </span>
+      <div
+        className="card-style"
+        draggable="true"
+        onClick={() => handleModal(true)}
+      >
+        <div>{cardImage && <img className="card-img" src={cardImage} />}</div>
+        {editCardHeading ? (
+          <input
+            className="input-editing"
+            value={cardHeading}
+            onChange={onChangeCardHeading}
+            onKeyDown={onSaveCardHeading}
+            autoFocus
+          />
+        ) : (
+          <>
+            <div className="crd">
+              <p className="cardstyle">{cardHeading} </p>
+            </div>
+          </>
         )}
+        <div className="design-icon">
+          {data.cardImages && data.cardImages.length > 0 && (
+            <span>
+              <i className="fa fa-paperclip"></i>
+              {data.cardImages.length}
+            </span>
+          )}
 
-        {data.description && (
-          <span>
-            <i className="fas fa-list-alt"></i>
-          </span>
-        )}
-        {data.dueDate && (
-          <span>{data.dueDate.startDate && data.dueDate.startDate}</span>
-        )}
+          {data.description && (
+            <span>
+              <i className="fas fa-list-alt"></i>
+            </span>
+          )}
+          {data.dueDate && (
+            <span>
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              {data.dueDate.startDate && data.dueDate.startDate}-
+              {data.dueDate.endDate && data.dueDate.endDate}
+            </span>
+          )}
+        </div>
       </div>
     </>
   );

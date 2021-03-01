@@ -27,6 +27,7 @@
   background: #62c0f4;
   color: #fff;
   cursor: pointer;
+  margin: 3px;
 }
 .edit-button {
   height: 25px;
@@ -43,13 +44,14 @@
 }
 .des-input {
   border: 1px solid red;
-  width: calc(100% - 180px);
-  height: calc(100% - 340px);
+  width: 80%;
+  height: 70px;
 }
 .addition-card {
   float: right;
   display: flex;
   flex-direction: column;
+  width: 30%;
 }
 .addition-card > button {
   margin: 5px 0px;
@@ -64,9 +66,7 @@
 
   cursor: pointer;
 }
-.addition-card > button:hover {
-  background-color: #3b7392;
-}
+
 .addition-card > label:hover {
   background-color: #3b7392;
 }
@@ -112,4 +112,36 @@
   width: 90%;
   padding: 8px;
   border-radius: 5px;
+}
+.Date-button {
+  border: 1px;
+  padding: 0px 5px 5px 5px;
+  border-radius: 5px;
+  background: #62c0f4;
+  color: #fff;
+  cursor: pointer;
+  margin: 3px;
+}
+.Date-button:hover {
+  background-color: #3b7392;
+}
+.des-edit {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: fit-content;
+}
+.save-btn {
+  width: 20%;
+  margin: 10px 0px;
+  background-color: #5aac44;
+  border: 2px;
+  padding: 5px;
+  border-radius: 5px;
+  color: #fff;
+}
+.save-btn:hover {
+  background-color: #69c750;
+}
+.listHead {
 }

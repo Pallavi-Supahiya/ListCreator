@@ -25,17 +25,18 @@
   overflow: auto;
 }
 .cardstyle {
-  padding: 5px;
-  background-color: white;
-  border: 2px;
-  border-radius: 2px;
-  margin: none;
+  // padding: 5px;
+  // background-color: white;
+  // border: 2px;
+  // border-radius: 2px;
+
   margin: 10px 0px;
-  height: auto;
+  // height: auto;
   font-family: 'Segoe UI';
   font-weight: lighter;
-}
-.cardstyle:hover {
+  position: relative;
+  padding: 0px 10px;
+  // right: 70px;
 }
 
 .iconbtn {
@@ -44,6 +45,11 @@
   border: 4px;
   border-radius: 2px;
   color: #fff;
+  height: 25px;
+  position: relative;
+
+  top: 50px;
+
   /*color: #c8f2ff;*/
 }
 .iconbtn:hover {
@@ -62,25 +68,59 @@ button:focus {
   display: inline-flex;
   background-color: hsl(0, 0%, 100%);
   margin: 10px 0px;
-  height: 40px;
+  height: auto;
   align-items: center;
   border-radius: 5px;
+}
+.card-img {
+  height: auto;
+  width: 200px;
 }
 .cardstyle {
   width: 80%;
 }
-.iconbtn {
-  width: 20%;
-  float: right;
-}
+
 .crd {
   display: flex;
+  width: inherit;
+}
+.crd:hover {
+  background-color: hsla(11, 77%, 53%, 0.5);
 }
 .design-icon {
   display: flex;
   flex-wrap: wrap;
 }
+.design-icon > i {
+  font-size: 15px;
+  font-weight: lighter;
+}
 .directioner {
   display: flex;
   flex-direction: column;
+}
+.style-image {
+  background-color: white;
+}
+.box > input {
+  border: 2px;
+  border-radius: 5px;
+  height: 25px;
+  width: 90%;
+  margin: 0px 10px;
+}
+.box > h4 {
+  padding: 0px 10px;
+  font-size: medium;
+  font-family: sans-serif;
+  margin: 10px 0px;
+}
+.input-editing {
+  width: -webkit-fill-available;
+  padding: 10px;
+  border: 0px;
+  border-radius: 5px;
+}
+.design-cards {
+  margin-top: -30px;
 }

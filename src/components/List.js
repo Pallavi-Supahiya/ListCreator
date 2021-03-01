@@ -7,15 +7,27 @@ import './Button.scss';
 const List = ({ heading }) => {
   const [listHeading, setListHeading] = useState('');
   const [editListHeading, setEditListHeading] = useState(false);
-  const [editCardHeading, setEditCardHeading] = useState(false);
   const [addCard, setAddCard] = useState(true);
   const [cardList, setCardList] = useState([]);
   const [cardHeading, setCardHeading] = useState('');
+  /////////////////////////////////////////////////////////////
+  const [editCardHeading, setEditCardHeading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     setListHeading(heading);
+    let tempCardList = JSON.parse(localStorage.getItem(heading));
+    console.log('hhhhhh', tempCardList);
+    if (tempCardList) setCardList(tempCardList);
   }, [heading]);
 
+  const saveData = (data, id) => {
+    let tempListData = [...cardList];
+    tempListData.splice(id, 1, data);
+    setCardList(tempListData);
+    localStorage.setItem(listHeading, JSON.stringify(tempListData));
+  };
+  console.log(cardList);
   const handelAddCard = () => {
     setAddCard((prev) => !prev);
   };
@@ -25,7 +37,7 @@ const List = ({ heading }) => {
 
   const onClickAddCard = () => {
     let tempCards = [...cardList];
-    tempCards.push(cardHeading);
+    tempCards.push({ cardHeading: cardHeading, data: {} });
     setCardHeading('');
     setCardList(tempCards);
   };
@@ -40,6 +52,21 @@ const List = ({ heading }) => {
       setEditListHeading((prev) => !prev);
     }
   };
+  /////////////////////////////////////////////////////////////////////////
+
+  const onChangeCardHeading = (e) => {
+    setCardHeading(e.target.value);
+  };
+  const onSaveCardHeading = (e) => {
+    if (e.keyCode === 13) setEditCardHeading(false);
+  };
+  const onClickCardHeading = (e) => {
+    setModalOpen(true);
+  };
+  const onEditCardHeading = (e) => {
+    setEditCardHeading((prev) => !prev);
+  };
+  //////////////////////////////////////////////////////////////////////////////
   const onDragStart = (e) => {
     e.dataTransfer.setData('text/plain', e.target.key);
     console.log(e);
@@ -55,9 +82,11 @@ const List = ({ heading }) => {
       setEditCardHeading((prev) => !prev);
     }
   };*/
-
+  const onDropDiv = (e) => {
+    console.log(e);
+  };
   return (
-    <div className="divstyle">
+    <div className="divstyle" onDrop={onDropDiv}>
       <div className="box">
         {editListHeading ? (
           <input
@@ -82,23 +111,36 @@ const List = ({ heading }) => {
           {cardList &&
             cardList.length > 0 &&
             cardList.map((card, key) => (
-              <div
-                className="card-style"
-                key={key}
-                draggable="true"
-                onDragStart={onDragStart}
-              >
-                <Card card={card} />
+              <div className="design-cards">
+                <button
+                  className="iconbtn"
+                  onClick={onEditCardHeading}
+                  key={key}
+                >
+                  <i className="fas fa-pencil-alt"></i>
+                </button>
+
+                <Card
+                  card={card}
+                  idx={key}
+                  saveData={saveData}
+                  setEditCardHeading={setEditCardHeading}
+                  editCardHeading={editCardHeading}
+                  listHeading={listHeading}
+                />
               </div>
             ))}
         </div>
         <div>
           {addCard ? (
-            <span onClick={handelAddCard}>+ Add a card</span>
+            <span className="spn" onClick={handelAddCard}>
+              + Add a card
+            </span>
           ) : (
             <>
               <input
                 className="cardinputstyle"
+                type="textarea"
                 placeholder="Enter a title for this card"
                 onChange={handelCardHeading}
                 value={cardHeading}

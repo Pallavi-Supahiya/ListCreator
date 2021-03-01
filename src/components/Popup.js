@@ -5,14 +5,17 @@ const Popup = ({
   openModal,
   setImage,
   setData,
+  saveCardData,
   data,
+  idx,
   cardHeading,
   setCardHeading,
+  listHeading,
 }) => {
   const [description, setDescription] = useState('');
   const [cardImages, setCardImages] = useState([]);
   const [editDesc, setEditDesc] = useState(true);
-  const [dueDate, setDueDate] = useState({});
+  const [dueDate, setDueDate] = useState({ start: '', end: '' });
   const [heading, setHeading] = useState('');
   useEffect(() => {
     setDescription(data.description ? data.description : '');
@@ -21,12 +24,19 @@ const Popup = ({
     setHeading(cardHeading);
   }, [data]);
   const onCloseModal = () => {
-    setData({
+    const tempData = {
       description: description,
       cardImages: cardImages,
+      cardHeading: heading,
       dueDate: dueDate,
-    });
+    };
+    setData(tempData);
+    saveCardData(
+      { data: tempData, listHeading: listHeading, cardHeading: cardHeading },
+      idx
+    );
     setCardHeading(heading);
+    console.log('im in close');
     openModal(false);
   };
   const onChangeDesc = (e) => {
@@ -36,7 +46,10 @@ const Popup = ({
     console.log(e);
     setEditDesc(false);
   };
-  const onChangeDate = (e) => {
+  const onChangeStartDate = (e) => {
+    setDueDate({ ...dueDate, [e.target.name]: e.target.value });
+  };
+  const onChangeEndDate = (e) => {
     setDueDate({ ...dueDate, [e.target.name]: e.target.value });
   };
   const editDescChange = () => {
@@ -82,6 +95,9 @@ const Popup = ({
               value={heading}
               onChange={onChangeHeading}
             />
+            <p>
+              in list <span className="listHead">{listHeading}</span>
+            </p>
             <div className="division">
               <h4>
                 <i className="fa fa-list-alt" aria-hidden="true"></i>Description
@@ -94,14 +110,16 @@ const Popup = ({
               )}
             </div>
             {editDesc ? (
-              <div>
-                <input
+              <div className="des-edit">
+                <textarea
                   className="des-input"
                   placeholder="Enter the description you would like to add"
                   value={description}
                   onChange={onChangeDesc}
                 />
-                <button onClick={saveDesc}>Save</button>
+                <button className="save-btn" onClick={saveDesc}>
+                  Save
+                </button>
               </div>
             ) : (
               <p> {description}</p>
@@ -125,12 +143,20 @@ const Popup = ({
             <h4>Add to card</h4>
             <label className="Date-button">
               <i class="fa fa-clock-o" aria-hidden="true"></i> Due Date
-              <input
-                type="date"
-                name="startDate"
-                value={dueDate.startDate && dueDate.startDate}
-                onChange={onChangeDate}
-              />
+              <div>
+                <input
+                  type="date"
+                  name="startDate"
+                  value={dueDate.startDate && dueDate.startDate}
+                  onChange={onChangeStartDate}
+                />
+                <input
+                  type="date"
+                  name="endDate"
+                  value={dueDate.endDate && dueDate.endDate}
+                  onChange={onChangeEndDate}
+                />
+              </div>
             </label>
             <label class="add-photo-btn">
               <i className="fa fa-paperclip" aria-hidden="true"></i>
