@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
+
 import './List.scss';
 import Popup from './Popup';
 
 const Card = ({
   card,
-  setEditCardHeading,
   idx,
   saveData,
-  editCardHeading,
+
   listHeading,
 }) => {
   const [cardHeading, setCardHeading] = useState(card.cardHeading);
@@ -15,6 +15,7 @@ const Card = ({
   // const [editCardHeading, setEditCardHeading] = useState(false);
   const [cardImage, setCardImage] = useState('');
   const [data, setData] = useState({});
+  const [editCardHeading, setEditCardHeading] = useState(false);
   useEffect(() => {
     if (card.data) {
       console.log(card.data);
@@ -25,9 +26,9 @@ const Card = ({
       setData(card.data);
     }
   }, [card]);
-  const onEditCardHeading = (e) => {
-    setEditCardHeading((prev) => !prev);
-  };
+  // const onEditCardHeading = (e) => {
+  //   setEditCardHeading((prev) => !prev);
+  // };
   const onChangeCardHeading = (e) => {
     setCardHeading(e.target.value);
   };
@@ -35,12 +36,23 @@ const Card = ({
     if (e.keyCode === 13) setEditCardHeading(false);
   };
   const handleModal = (val) => {
-    console.log('im in handel', val);
+    console.log('im in handle', val);
     setOpenModal(val);
   };
 
+  const onEditCardHeading = (e) => {
+    setEditCardHeading((prev) => !prev);
+  };
+  //const [collected, drag, dragPreview] = useDrag(() => ({
+  //   item: { id, card },
+  // }));
+
   return (
     <>
+      <button className="iconbtn" onClick={onEditCardHeading}>
+        <i className="fas fa-pencil-alt"></i>
+      </button>
+
       {openModal && (
         <Popup
           openModal={handleModal}
@@ -54,12 +66,19 @@ const Card = ({
           listHeading={listHeading}
         />
       )}
+      {/* collected.isDragging ?
+    <div ref={dragPreview> : (
+    <div ref={drag} {...collected}>
+      ...
+    </div> */}
       <div
         className="card-style"
         draggable="true"
         onClick={() => handleModal(true)}
       >
-        <div>{cardImage && <img className="card-img" src={cardImage} />}</div>
+        <div className="image-editor">
+          {cardImage && <img className="card-img" src={cardImage} />}
+        </div>
         {editCardHeading ? (
           <input
             className="input-editing"
@@ -88,10 +107,14 @@ const Card = ({
               <i className="fas fa-list-alt"></i>
             </span>
           )}
-          {data.dueDate && (
-            <span>
+
+          {data.dueDate && Object.keys(data.dueDate).length > 0 && (
+            <span className="date-design">
               <i class="fa fa-clock-o" aria-hidden="true"></i>
-              {data.dueDate.startDate && data.dueDate.startDate}-
+              {data.dueDate.startDate && <span>{data.dueDate.startDate}</span>}
+              {data.dueDate.startDate && data.dueDate.endDate && (
+                <p className="hyphen">{'  to  '}</p>
+              )}
               {data.dueDate.endDate && data.dueDate.endDate}
             </span>
           )}

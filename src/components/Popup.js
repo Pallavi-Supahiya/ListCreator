@@ -15,7 +15,7 @@ const Popup = ({
   const [description, setDescription] = useState('');
   const [cardImages, setCardImages] = useState([]);
   const [editDesc, setEditDesc] = useState(true);
-  const [dueDate, setDueDate] = useState({ start: '', end: '' });
+  const [dueDate, setDueDate] = useState();
   const [heading, setHeading] = useState('');
   useEffect(() => {
     setDescription(data.description ? data.description : '');
@@ -147,13 +147,13 @@ const Popup = ({
                 <input
                   type="date"
                   name="startDate"
-                  value={dueDate.startDate && dueDate.startDate}
+                  value={dueDate && dueDate.startDate && dueDate.startDate}
                   onChange={onChangeStartDate}
                 />
                 <input
                   type="date"
                   name="endDate"
-                  value={dueDate.endDate && dueDate.endDate}
+                  value={dueDate && dueDate.endDate && dueDate.endDate}
                   onChange={onChangeEndDate}
                 />
               </div>

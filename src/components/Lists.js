@@ -49,7 +49,7 @@ const Lists = () => {
         <div className="direct">
           {lists &&
             lists.length > 0 &&
-            lists.map((list) => <List heading={list} />)}
+            lists.map((list, idx) => <List heading={list} idx={idx} />)}
         </div>
       </div>
       <div>

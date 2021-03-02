@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-
+import { useDrop } from 'react-dnd';
 import Card from './Card';
 import './List.scss';
 import './Button.scss';
 
-const List = ({ heading }) => {
+const List = ({ heading, idx }) => {
   const [listHeading, setListHeading] = useState('');
   const [editListHeading, setEditListHeading] = useState(false);
   const [addCard, setAddCard] = useState(true);
@@ -42,6 +42,8 @@ const List = ({ heading }) => {
     setCardList(tempCards);
   };
   const onClickListHeading = () => {
+    localStorage.removeItem(listHeading);
+
     setEditListHeading((prev) => !prev);
   };
   const onChangeListHeading = (e) => {
@@ -50,6 +52,10 @@ const List = ({ heading }) => {
   const onSaveListHeading = (e) => {
     if (e.keyCode === 13) {
       setEditListHeading((prev) => !prev);
+      let tempLists = JSON.parse(localStorage.getItem('ListsName'));
+      tempLists.splice(idx, 1, listHeading);
+      localStorage.setItem('ListsName', JSON.stringify(tempLists));
+      localStorage.setItem(listHeading, JSON.stringify(cardList));
     }
   };
   /////////////////////////////////////////////////////////////////////////
@@ -58,13 +64,15 @@ const List = ({ heading }) => {
     setCardHeading(e.target.value);
   };
   const onSaveCardHeading = (e) => {
-    if (e.keyCode === 13) setEditCardHeading(false);
+    if (e.keyCode === 13) {
+      setEditCardHeading(false);
+    }
   };
   const onClickCardHeading = (e) => {
     setModalOpen(true);
   };
   const onEditCardHeading = (e) => {
-    setEditCardHeading((prev) => !prev);
+    console.log('edit');
   };
   //////////////////////////////////////////////////////////////////////////////
   const onDragStart = (e) => {
@@ -85,7 +93,11 @@ const List = ({ heading }) => {
   const onDropDiv = (e) => {
     console.log(e);
   };
+  //const [collectedProps, drop] = useDrop(() => ({
+  // accept
+  //}))
   return (
+    // <div ref={drop}>
     <div className="divstyle" onDrop={onDropDiv}>
       <div className="box">
         {editListHeading ? (
@@ -112,20 +124,10 @@ const List = ({ heading }) => {
             cardList.length > 0 &&
             cardList.map((card, key) => (
               <div className="design-cards">
-                <button
-                  className="iconbtn"
-                  onClick={onEditCardHeading}
-                  key={key}
-                >
-                  <i className="fas fa-pencil-alt"></i>
-                </button>
-
                 <Card
                   card={card}
                   idx={key}
                   saveData={saveData}
-                  setEditCardHeading={setEditCardHeading}
-                  editCardHeading={editCardHeading}
                   listHeading={listHeading}
                 />
               </div>

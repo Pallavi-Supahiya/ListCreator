@@ -73,8 +73,8 @@ button:focus {
   border-radius: 5px;
 }
 .card-img {
-  height: auto;
-  width: 200px;
+  //height: auto;
+  width: 100%;
 }
 .cardstyle {
   width: 80%;
@@ -123,4 +123,20 @@ button:focus {
 }
 .design-cards {
   margin-top: -30px;
+}
+.design-icon {
+  font-size: small;
+  display: flex;
+  flex-direction: row;
+}
+.date-design {
+  display: flex;
+  flex-direction: row;
+}
+.hyphen {
+  top: -13px;
+  position: relative;
+}
+.image-editor {
+  padding: 5px;
 }
