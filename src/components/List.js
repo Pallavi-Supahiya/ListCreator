@@ -4,7 +4,7 @@ import Card from './Card';
 import './List.scss';
 import './Button.scss';
 
-const List = ({ heading, idx }) => {
+const List = ({ heading, idx, isOver }) => {
   const [listHeading, setListHeading] = useState('');
   const [editListHeading, setEditListHeading] = useState(false);
   const [addCard, setAddCard] = useState(true);
@@ -93,12 +93,22 @@ const List = ({ heading, idx }) => {
   const onDropDiv = (e) => {
     console.log(e);
   };
+  const onDrop = (item, monitor, status) => {
+    setCardList(cardList);
+  };
+  const moveItem = (dragIndex, hoverIndex) => {
+    let tempCard = cardList[dragIndex];
+    let tempCardList = cardList.filter((v, ix) => ix !== dragIndex);
+    tempCardList.splice(hoverIndex, 0, tempCard);
+    setCardList(tempCardList);
+  };
   //const [collectedProps, drop] = useDrop(() => ({
   // accept
   //}))
+  const className = isOver ? 'highlight-region' : '';
   return (
     // <div ref={drop}>
-    <div className="divstyle" onDrop={onDropDiv}>
+    <div className={`divstyle ${className}`}>
       <div className="box">
         {editListHeading ? (
           <input
@@ -127,6 +137,7 @@ const List = ({ heading, idx }) => {
                 <Card
                   card={card}
                   idx={key}
+                  moveItem={moveItem}
                   saveData={saveData}
                   listHeading={listHeading}
                 />

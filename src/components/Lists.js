@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import List from './List';
 import './Lists.scss';
 import './Button.scss';
+import { useDrop } from 'react-dnd';
 const Lists = () => {
   const [addList, setAddList] = useState(true);
   const [heading, setHeading] = useState('');
@@ -11,6 +12,16 @@ const Lists = () => {
     console.log(tempLists);
     if (tempLists) setLists(tempLists);
   }, []);
+  const [{ isOver }, drop] = useDrop({
+    accept: 'Card',
+    drop: (item, monitor) => {
+      ondrop(item, monitor, 1);
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
+  });
+
   const handelAddList = (e) => {
     setAddList((prevState) => !prevState);
     console.log(e.target);
@@ -45,11 +56,13 @@ const Lists = () => {
 
   return (
     <>
-      <div onDrop={onDropIt} onDragOver={allowDrop}>
+      <div ref={drop}>
         <div className="direct">
           {lists &&
             lists.length > 0 &&
-            lists.map((list, idx) => <List heading={list} idx={idx} />)}
+            lists.map((list, idx) => (
+              <List heading={list} idx={idx} isOver={isOver} />
+            ))}
         </div>
       </div>
       <div>

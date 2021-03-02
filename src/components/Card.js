@@ -1,21 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useDrag, useDrop } from 'react-dnd';
 
 import './List.scss';
 import Popup from './Popup';
 
-const Card = ({
-  card,
-  idx,
-  saveData,
-
-  listHeading,
-}) => {
+const Card = ({ card, idx, saveData, moveItem, status, listHeading }) => {
   const [cardHeading, setCardHeading] = useState(card.cardHeading);
   const [openModal, setOpenModal] = useState(false);
   // const [editCardHeading, setEditCardHeading] = useState(false);
   const [cardImage, setCardImage] = useState('');
   const [data, setData] = useState({});
   const [editCardHeading, setEditCardHeading] = useState(false);
+  const ref = useRef(null);
   useEffect(() => {
     if (card.data) {
       console.log(card.data);
@@ -29,6 +25,24 @@ const Card = ({
   // const onEditCardHeading = (e) => {
   //   setEditCardHeading((prev) => !prev);
   // };
+  const [, drop] = useDrop({
+    accept: 'Card',
+    hover(item, monitor) {
+      if (!ref.current) return;
+      const dragIndex = item.index;
+      const hoverIndex = idx;
+      if (dragIndex === hoverIndex) return;
+      moveItem(dragIndex, hoverIndex);
+      item.index = hoverIndex;
+    },
+  });
+
+  const [{ isDragging }, drag] = useDrag({
+    item: { type: 'Card', ...card, idx },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
   const onChangeCardHeading = (e) => {
     setCardHeading(e.target.value);
   };
@@ -47,8 +61,10 @@ const Card = ({
   //   item: { id, card },
   // }));
 
+  drag(drop(ref));
+
   return (
-    <>
+    <div ref={ref}>
       <button className="iconbtn" onClick={onEditCardHeading}>
         <i className="fas fa-pencil-alt"></i>
       </button>
@@ -120,7 +136,7 @@ const Card = ({
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
