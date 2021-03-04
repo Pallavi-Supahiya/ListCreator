@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import List from './List';
-import { reorderRows, rows } from './reorder';
+
 import './Lists.scss';
 import './Button.scss';
 const Lists = () => {

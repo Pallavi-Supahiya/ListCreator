@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDrop } from 'react-dnd';
+
 import Card from './Card';
 import './List.scss';
 import './Button.scss';
