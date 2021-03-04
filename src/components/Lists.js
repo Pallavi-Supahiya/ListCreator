@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { DragDropContext } from 'react-beautiful-dnd';
 import List from './List';
+import { reorderRows, rows } from './reorder';
 import './Lists.scss';
 import './Button.scss';
 const Lists = () => {
@@ -42,16 +44,54 @@ const Lists = () => {
   //  else setHeading(false);
   // }
   // };
+  const onDragEnd = (result) => {
+    console.log(result, 'hjjfdjf');
+    //   const { source, destination, draggableId } = result;
+    //   // dropped outside the list
+    //   if (!destination) {
+    //     return;
+    //   }
+    //   if (
+    //     source.droppableId === destination.droppableId &&
+    //     destination.index === source.index
+    //   ) {
+    //     return
+    //   }
+    //   const start = lists[source.droppableId]
+    //   const finish = lists[destination.droppableId]
+    //     const result = move(
+    //       this.getList(source.droppableId),
+    //       this.getList(destination.droppableId),
+    //       source,
+    //       destination
+    //     );
+    //     this.setState({
+    //       items: result.droppable,
+    //       selected: result.droppable2,
+    //     });
+    //   }
+  };
 
   return (
     <>
-      <div onDrop={onDropIt} onDragOver={allowDrop}>
+      {/* <DragDropContext
+        onDragEnd={({ destination, source }) => {
+          // // dropped outside the list
+          if (!destination) {
+            return;
+          }
+
+          setLists(reorderRows(rows, source, destination));
+        }}
+      > */}
+      <DragDropContext onDragEnd={onDragEnd}>
         <div className="direct">
           {lists &&
             lists.length > 0 &&
             lists.map((list, idx) => <List heading={list} idx={idx} />)}
         </div>
-      </div>
+      </DragDropContext>
+
       <div>
         {addList ? (
           <span className="list" onClick={handelAddList}>
@@ -77,6 +117,7 @@ const Lists = () => {
           </div>
         )}
       </div>
+      {/* </DragDropContext> */}
     </>
   );
 };

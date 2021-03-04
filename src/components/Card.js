@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from 'react';
-
+import Moment from 'react-moment';
 import './List.scss';
 import Popup from './Popup';
 
-const Card = ({
-  card,
-  idx,
-  saveData,
-
-  listHeading,
-}) => {
-  const [cardHeading, setCardHeading] = useState(card.cardHeading);
+const Card = ({ card, idx, saveData, listHeading }) => {
+  const [cardHeading, setCardHeading] = useState('');
   const [openModal, setOpenModal] = useState(false);
   // const [editCardHeading, setEditCardHeading] = useState(false);
   const [cardImage, setCardImage] = useState('');
@@ -25,6 +19,8 @@ const Card = ({
         setCardImage(card.data.cardImages[0].base64);
       setData(card.data);
     }
+    setCardHeading(card.cardHeading);
+    console.log('jhdskd', card, idx);
   }, [card]);
   // const onEditCardHeading = (e) => {
   //   setEditCardHeading((prev) => !prev);
@@ -46,7 +42,6 @@ const Card = ({
   //const [collected, drag, dragPreview] = useDrag(() => ({
   //   item: { id, card },
   // }));
-
   return (
     <>
       <button className="iconbtn" onClick={onEditCardHeading}>
@@ -71,11 +66,7 @@ const Card = ({
     <div ref={drag} {...collected}>
       ...
     </div> */}
-      <div
-        className="card-style"
-        draggable="true"
-        onClick={() => handleModal(true)}
-      >
+      <div className="card-style" onClick={() => handleModal(true)}>
         <div className="image-editor">
           {cardImage && <img className="card-img" src={cardImage} />}
         </div>
@@ -90,7 +81,7 @@ const Card = ({
         ) : (
           <>
             <div className="crd">
-              <p className="cardstyle">{cardHeading} </p>
+              <p className="cardstyle"> {cardHeading} </p>
             </div>
           </>
         )}
@@ -110,12 +101,24 @@ const Card = ({
 
           {data.dueDate && Object.keys(data.dueDate).length > 0 && (
             <span className="date-design">
-              <i class="fa fa-clock-o" aria-hidden="true"></i>
-              {data.dueDate.startDate && <span>{data.dueDate.startDate}</span>}
-              {data.dueDate.startDate && data.dueDate.endDate && (
-                <p className="hyphen">{'  to  '}</p>
+              <span className="clock-icon">
+                {' '}
+                <i className="fa fa-clock-o" aria-hidden="true"></i>
+              </span>
+
+              {data.dueDate.startDate && (
+                <span>
+                  <Moment format="MMM DD,YYYY">{data.dueDate.startDate}</Moment>
+                </span>
               )}
-              {data.dueDate.endDate && data.dueDate.endDate}
+
+              {data.dueDate.startDate && data.dueDate.endDate && (
+                <p className="hyphen">{' - '}</p>
+              )}
+
+              {data.dueDate.endDate && (
+                <Moment format="MMM DD,YYYY">{data.dueDate.endDate}</Moment>
+              )}
             </span>
           )}
         </div>

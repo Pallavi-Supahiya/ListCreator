@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { DateRangePicker } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 import './Popup.scss';
 
 const Popup = ({
@@ -23,6 +26,7 @@ const Popup = ({
     setDueDate(data.dueDate ? data.dueDate : {});
     setHeading(cardHeading);
   }, [data]);
+
   const onCloseModal = () => {
     const tempData = {
       description: description,
@@ -75,6 +79,12 @@ const Popup = ({
   const onChangeHeading = (e) => {
     setHeading(e.target.value);
   };
+  const selectionRange = {
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection',
+  };
+  const handleDate = (rages) => {};
   return (
     <div className="modal">
       <div className="modal-styling">
@@ -143,19 +153,23 @@ const Popup = ({
             <h4>Add to card</h4>
             <label className="Date-button">
               <i class="fa fa-clock-o" aria-hidden="true"></i> Due Date
-              <div>
-                <input
+              <div style={{ maxWidth: '300px' }}>
+                <DateRangePicker
+                  ranges={[selectionRange]}
+                  onChange={handleDate}
+                />
+                {/* <input
                   type="date"
                   name="startDate"
                   value={dueDate && dueDate.startDate && dueDate.startDate}
                   onChange={onChangeStartDate}
-                />
-                <input
+                /> */}
+                {/* <input
                   type="date"
                   name="endDate"
                   value={dueDate && dueDate.endDate && dueDate.endDate}
                   onChange={onChangeEndDate}
-                />
+                /> */}
               </div>
             </label>
             <label class="add-photo-btn">
