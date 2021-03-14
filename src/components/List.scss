@@ -9,6 +9,8 @@
   display: table;
   text-align: left;
 }
+.box > input {
+}
 .divstyle {
   display: flex;
 }
@@ -16,20 +18,16 @@
   border: 2px;
   border-radius: 4px;
   height: 60px;
-  width: 210px;
+  width: 98%;
   font-family: 'Segoe UI';
   font-weight: 10px;
 }
 .cards {
-  max-height: 300px;
+  min-height: 10px;
+  max-height: 60vh;
   overflow: auto;
 }
 .cardstyle {
-  // padding: 5px;
-  // background-color: white;
-  // border: 2px;
-  // border-radius: 2px;
-
   margin: 10px 0px;
   // height: auto;
   font-family: 'Segoe UI';
@@ -72,6 +70,9 @@ button:focus {
   align-items: center;
   border-radius: 5px;
 }
+.card-style:hover {
+  background-color: hsla(11, 77%, 53%, 0.5);
+}
 .card-img {
   //height: auto;
   width: 100%;
@@ -84,9 +85,7 @@ button:focus {
   display: flex;
   width: inherit;
 }
-.crd:hover {
-  background-color: hsla(11, 77%, 53%, 0.5);
-}
+
 .design-icon {
   display: flex;
   flex-wrap: wrap;
@@ -106,14 +105,18 @@ button:focus {
   border: 2px;
   border-radius: 5px;
   height: 25px;
-  width: 90%;
-  margin: 0px 10px;
+  width: 98%;
 }
 .box > h4 {
-  padding: 0px 10px;
   font-size: medium;
   font-family: sans-serif;
   margin: 10px 0px;
+  padding: 7px 0px;
+}
+.box > h4:hover {
+  border: 5px;
+  border-radius: 5px;
+  background-color: hsla(11, 77%, 53%, 0.5);
 }
 .input-editing {
   width: -webkit-fill-available;
@@ -127,7 +130,9 @@ button:focus {
 .design-icon {
   font-size: small;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  position: relative;
+  right: 60px;
 }
 .date-design {
   display: flex;

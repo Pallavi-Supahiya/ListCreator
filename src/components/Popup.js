@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import Calendar from 'react-calendar';
-import './Popup.scss';
+import React, { useState, useEffect } from 'react'
+import { DateRangePicker } from 'react-dates'
+import Calendar from 'react-calendar'
+import moment from 'moment'
+import './Popup.scss'
+
+import 'react-dates/initialize'
+import 'react-dates/lib/css/_datepicker.css'
 
 const Popup = ({
   openModal,
@@ -13,75 +18,70 @@ const Popup = ({
   setCardHeading,
   listHeading,
 }) => {
-  const [description, setDescription] = useState('');
-  const [cardImages, setCardImages] = useState([]);
-  const [editDesc, setEditDesc] = useState(true);
-  const [dueDate, setDueDate] = useState(new Date());
-  const [heading, setHeading] = useState('');
+  const [description, setDescription] = useState('')
+  const [cardImages, setCardImages] = useState([])
+  const [editDesc, setEditDesc] = useState(true)
+  const [dueDate, setDueDate] = useState({})
+  const [heading, setHeading] = useState('')
+  const [focusedInput, setFocusedInput] = useState(null)
   // const [selectionRange, setSelectionRange] = useState({
   //   startDate: new Date(),
   //   endDate: new Date(),
   //   key: 'selection',
   // });
   useEffect(() => {
-    setDescription(data.description ? data.description : '');
-    setCardImages(data.cardImages ? data.cardImages : []);
-    setDueDate(data.dueDate ? data.dueDate : {});
-    setHeading(cardHeading);
-  }, [data]);
-
+    setDescription(data.description ? data.description : '')
+    setCardImages(data.cardImages ? data.cardImages : [])
+    setDueDate(data.dueDate ? data.dueDate : dueDate)
+    console.log(data.dueDate)
+    setHeading(cardHeading)
+  }, [data])
   const onCloseModal = () => {
     const tempData = {
       description: description,
       cardImages: cardImages,
       cardHeading: heading,
       dueDate: dueDate,
-    };
-    setData(tempData);
+    }
+    setData(tempData)
     saveCardData(
-      { data: tempData, listHeading: listHeading, cardHeading: cardHeading },
+      { data: tempData, listHeading: listHeading, cardHeading: heading },
       idx
-    );
-    setCardHeading(heading);
-    console.log('im in close');
-    openModal(false);
-  };
+    )
+    setCardHeading(heading)
+    console.log('im in close')
+    openModal(false)
+  }
   const onChangeDesc = (e) => {
-    setDescription(e.target.value);
-  };
+    setDescription(e.target.value)
+  }
   const saveDesc = (e) => {
-    console.log(e);
-    setEditDesc(false);
-  };
-  const onChangeStartDate = (e) => {
-    setDueDate({ ...dueDate, [e.target.name]: e.target.value });
-  };
-  const onChangeEndDate = (e) => {
-    setDueDate({ ...dueDate, [e.target.name]: e.target.value });
-  };
+    console.log(e)
+    setEditDesc(false)
+  }
   const editDescChange = () => {
-    setEditDesc(true);
-  };
+    setEditDesc(true)
+  }
   const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-      reader.readAsDataURL(file);
-    });
-  };
+      const reader = new FileReader()
+      reader.onload = () => resolve(reader.result)
+      reader.onerror = (error) => reject(error)
+      reader.readAsDataURL(file)
+    })
+  }
   const onSelectImage = (e) => {
     getBase64(e.target.files[0]).then((base64) => {
-      let tempCardImages = [...cardImages];
-      tempCardImages.push({ base64, name: e.target.files[0].name });
-      setCardImages(tempCardImages);
-      if (tempCardImages.length === 1) setImage(base64);
-    });
-    console.log(e.target.files);
-  };
+      let tempCardImages = [...cardImages]
+      tempCardImages.push({ base64, name: e.target.files[0].name })
+      setCardImages(tempCardImages)
+      if (tempCardImages.length === 1) setImage(base64)
+    })
+    console.log(e.target.files)
+  }
   const onChangeHeading = (e) => {
-    setHeading(e.target.value);
-  };
+    setHeading(e.target.value)
+  }
 
   // const handleDate = (ranges) => {
   //   console.log('djkshdjks', ranges);
@@ -155,26 +155,24 @@ const Popup = ({
               </div>
             )}
           </div>
+
           <div className="addition-card">
             <h4>Add to card</h4>
-            <label className="Date-button">
-              <i class="fa fa-clock-o" aria-hidden="true"></i> Due Date
-              <div>
-                {/*<Calendar onChange={} */}{' '}
-                <input
-                  type="date"
-                  name="startDate"
-                  value={dueDate && dueDate.startDate && dueDate.startDate}
-                  onChange={onChangeStartDate}
-                />
-                <input
-                  type="date"
-                  name="endDate"
-                  value={dueDate && dueDate.endDate && dueDate.endDate}
-                  onChange={onChangeEndDate}
-                />
-              </div>
-            </label>
+            <DateRangePicker
+              startDate={dueDate.startDate ? dueDate.startDate : null} // momentPropTypes.momentObj or null,
+              startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+              endDate={dueDate.endDate ? dueDate.endDate : null} // momentPropTypes.momentObj or null,
+              endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
+              onDatesChange={({ startDate, endDate }) =>
+                setDueDate({ startDate, endDate })
+              } // PropTypes.func.isRequired,
+              focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+              onFocusChange={(focusedInput) => setFocusedInput(focusedInput)} // PropTypes.func.isRequired,
+              displayFormat={'DD-MM-YYYY'}
+              showClearDates={true}
+              isOutsideRange={() => false}
+              numberOfMonths={1}
+            />
             <label class="add-photo-btn">
               <i className="fa fa-paperclip" aria-hidden="true"></i>
               Attachment
@@ -190,6 +188,6 @@ const Popup = ({
         </div>
       </div>
     </div>
-  );
-};
-export default Popup;
+  )
+}
+export default Popup

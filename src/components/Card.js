@@ -27,6 +27,7 @@ const Card = ({ card, idx, saveData, listHeading }) => {
   // };
   const onChangeCardHeading = (e) => {
     setCardHeading(e.target.value);
+    if (card?.data?.cardHeading) card.data.cardHeading = e.target.value;
   };
   const onSaveCardHeading = (e) => {
     if (e.keyCode === 13) setEditCardHeading(false);
@@ -61,14 +62,12 @@ const Card = ({ card, idx, saveData, listHeading }) => {
           listHeading={listHeading}
         />
       )}
-      {/* collected.isDragging ?
-    <div ref={dragPreview> : (
-    <div ref={drag} {...collected}>
-      ...
-    </div> */}
+
       <div className="card-style" onClick={() => handleModal(true)}>
         <div className="image-editor">
-          {cardImage && <img className="card-img" src={cardImage} />}
+          {card?.data?.cardImages?.[0]?.base64 && (
+            <img className="card-img" src={card?.data?.cardImages[0]?.base64} />
+          )}
         </div>
         {editCardHeading ? (
           <input
@@ -86,41 +85,48 @@ const Card = ({ card, idx, saveData, listHeading }) => {
           </>
         )}
         <div className="design-icon">
-          {data.cardImages && data.cardImages.length > 0 && (
-            <span>
-              <i className="fa fa-paperclip"></i>
-              {data.cardImages.length}
-            </span>
-          )}
-
-          {data.description && (
-            <span>
-              <i className="fas fa-list-alt"></i>
-            </span>
-          )}
-
-          {data.dueDate && Object.keys(data.dueDate).length > 0 && (
-            <span className="date-design">
-              <span className="clock-icon">
-                {' '}
-                <i className="fa fa-clock-o" aria-hidden="true"></i>
+          <div className="desc-img">
+            {data.cardImages && data.cardImages.length > 0 && (
+              <span>
+                <i className="fa fa-paperclip"></i>
+                {data.cardImages.length}
               </span>
+            )}
 
-              {data.dueDate.startDate && (
-                <span>
-                  <Moment format="MMM DD,YYYY">{data.dueDate.startDate}</Moment>
-                </span>
-              )}
+            {data.description && (
+              <span>
+                <i className="fas fa-list-alt"></i>
+              </span>
+            )}
+          </div>
+          <div className="date-icn">
+            {data.dueDate && Object.keys(data.dueDate).length > 0 && (
+              <span className="date-design">
+                {(data.dueDate.startDate || data.dueDate.endDate) && (
+                  <span className="clock-icon">
+                    {' '}
+                    <i className="fa fa-clock-o" aria-hidden="true"></i>
+                  </span>
+                )}
 
-              {data.dueDate.startDate && data.dueDate.endDate && (
-                <p className="hyphen">{' - '}</p>
-              )}
+                {data.dueDate.startDate && (
+                  <span>
+                    <Moment format="MMM DD,YYYY">
+                      {data.dueDate.startDate}
+                    </Moment>
+                  </span>
+                )}
 
-              {data.dueDate.endDate && (
-                <Moment format="MMM DD,YYYY">{data.dueDate.endDate}</Moment>
-              )}
-            </span>
-          )}
+                {data.dueDate.startDate && data.dueDate.endDate && (
+                  <p className="hyphen">{' - '}</p>
+                )}
+
+                {data.dueDate.endDate && (
+                  <Moment format="MMM DD,YYYY">{data.dueDate.endDate}</Moment>
+                )}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </>
